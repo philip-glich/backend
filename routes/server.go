@@ -321,6 +321,7 @@ const (
 	RoutePathStake       = "/api/v0/stake"
 	RoutePathUnstake     = "/api/v0/unstake"
 	RoutePathUnlockStake = "/api/v0/unlock-stake"
+	RoutePathLockedStake = "/api/v0/locked-stake"
 )
 
 // APIServer provides the interface between the blockchain and things like the
@@ -1317,6 +1318,20 @@ func (fes *APIServer) NewRouter() *muxtrace.Router {
 			PublicAccess,
 		},
 		{
+			"GetStakeForValidatorAndStaker",
+			[]string{"GET"},
+			RoutePathStake + "/{validatorPublicKeyBase58Check:t?BC[1-9A-HJ-NP-Za-km-z]{51,53}}/{stakerPublicKeyBase58Check:t?BC[1-9A-HJ-NP-Za-km-z]{51,53}}",
+			fes.GetStakeForValidatorAndStaker,
+			PublicAccess,
+		},
+		{
+			"GetStakesForValidator",
+			[]string{"GET"},
+			RoutePathStake + "/validator/{validatorPublicKeyBase58Check:t?BC[1-9A-HJ-NP-Za-km-z]{51,53}}",
+			fes.GetStakesForValidator,
+			PublicAccess,
+		},
+		{
 			"Unstake",
 			[]string{"POST", "OPTIONS"},
 			RoutePathUnstake,
@@ -1328,6 +1343,13 @@ func (fes *APIServer) NewRouter() *muxtrace.Router {
 			[]string{"POST", "OPTIONS"},
 			RoutePathUnlockStake,
 			fes.UnlockStake,
+			PublicAccess,
+		},
+		{
+			"GetLockedStakeForValidatorAndStaker",
+			[]string{"GET"},
+			RoutePathLockedStake + "/{validatorPublicKeyBase58Check:t?BC[1-9A-HJ-NP-Za-km-z]{51,53}}/{stakerPublicKeyBase58Check:t?BC[1-9A-HJ-NP-Za-km-z]{51,53}}",
+			fes.GetLockedStakesForValidatorAndStaker,
 			PublicAccess,
 		},
 		// Jumio Routes
