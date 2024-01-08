@@ -316,6 +316,14 @@ const (
 
 	// validators.go
 	RoutePathValidators = "/api/v0/validators"
+
+	// lockups.go
+	RoutePathCoinLockup             = "/api/v0/coin-lockup"
+	RoutePathUpdateCoinLockupParams = "/api/v0/update-coin-lockup-params"
+	RoutePathCoinLockupTransfer     = "/api/v0/coin-lockup-transfer"
+	RoutePathCoinUnlock             = "/api/v0/coin-unlock"
+	RoutePathLockupYieldCurvePoints = "/api/v0/lockup-yield-curve-points"
+	RoutePathLockedBalanceEntries   = "/api/v0/locked-balance-entries"
 )
 
 // APIServer provides the interface between the blockchain and things like the
@@ -1302,6 +1310,48 @@ func (fes *APIServer) NewRouter() *muxtrace.Router {
 			[]string{"GET"},
 			RoutePathValidators + "/{publicKeyBase58Check:t?BC[1-9A-HJ-NP-Za-km-z]{51,53}}",
 			fes.GetValidatorByPublicKeyBase58Check,
+			PublicAccess,
+		},
+		{
+			"CoinLockup",
+			[]string{"POST", "OPTIONS"},
+			RoutePathCoinLockup,
+			fes.CoinLockup,
+			PublicAccess,
+		},
+		{
+			"UpdateCoinLockupParams",
+			[]string{"POST", "OPTIONS"},
+			RoutePathUpdateCoinLockupParams,
+			fes.UpdateCoinLockupParams,
+			PublicAccess,
+		},
+		{
+			"CoinLockupTransfer",
+			[]string{"POST", "OPTIONS"},
+			RoutePathCoinLockupTransfer,
+			fes.CoinLockupTransfer,
+			PublicAccess,
+		},
+		{
+			"CoinUnlock",
+			[]string{"POST", "OPTIONS"},
+			RoutePathCoinUnlock,
+			fes.CoinUnlock,
+			PublicAccess,
+		},
+		{
+			"LockedYieldCurvePoints",
+			[]string{"GET"},
+			RoutePathLockupYieldCurvePoints + "/{publicKeyBase58Check:t?BC[1-9A-HJ-NP-Za-km-z]{51,53}}",
+			fes.LockedYieldCurvePoints,
+			PublicAccess,
+		},
+		{
+			"LockedBalanceEntries",
+			[]string{"GET"},
+			RoutePathLockedBalanceEntries + "/{publicKeyBase58Check:t?BC[1-9A-HJ-NP-Za-km-z]{51,53}}",
+			fes.LockedBalanceEntries,
 			PublicAccess,
 		},
 		// Jumio Routes
